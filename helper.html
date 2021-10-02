@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="google-site-verification" content="FHih29EQ-OP19dGHkORkOsjoIWTjbi_nB--ywfzqTd8" />
+    <title>Fantasy Helper</title>
+    <!--<link rel="stylesheet" href="css/main.css">
+    <link rel="icon" href="images/favicon.ico">
+    <link rel="icon" href="images/icon.png">-->
+    <link rel="canonical" href="https://baseball-analytica.com">
+    <script src="https://unpkg.com/vue@3.0.2"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/4.1.2/papaparse.js"></script>
+</head>
+<body>
+    <h1>Welcome to Fantasy Helper</h1>
+
+    <div id="helper">
+        <!-- dropdown menu for player type selection -->
+        <label for="playerType">Player Type:</label>
+        <select name="playerType" id="playerType">
+            <option value="Batters">Batters</option>
+            <option value="Pitchers">Pitchers</option>
+        </select>
+        <button @click="setTablePlayer(selectedPlayerType())">
+            <span>Set Player Type</span>
+        </button>
+        <button @click="loadTable(dataSourceForPlayerType())">Generate Table</button>
+
+        <p>This is a test to see if "mount" is working</p>
+
+        <!-- displays batter data if batter selected 
+        <div v-if="batterDataShown && countBatterTables < 1">
+            {{ loadTable('data/batter-data-09-24-21.csv') }}
+        </div>
+         displays pitcher data if pitcher selected 
+        <div v-else-if="!batterDataShown && countPitcherTables < 1">
+            {{ loadTable('data/pitcher-data-09-24-21.csv') }}
+        </div>
+        -->
+
+        <table id="rankingsTable" class="table">
+            <thead>
+                <tr>
+                    <th>Season</th>
+                    <th>Name</th>
+                    <th>Team</th>
+                    <th>PA</th>
+                    <th>BB%</th>
+                    <th>K%</th>
+                    <th>BB/K</th>
+                    <th>AVG</th>
+                    <th>OBP</th>
+                    <th>SLG</th>
+                    <th>OPS</th>
+                    <th>ISO</th>
+                    <th>BABIP</th>
+                    <th>wRC</th>
+                    <th>wRAA</th>
+                    <th>wOBA</th>
+                    <th>wRC+</th>
+                    <th>playerId</th>
+                </tr>
+            </thead>
+            <tbody id="rankingsBody">
+                <!-- to be filled by JavaScript -->
+            </tbody>
+        </table>
+        
+    </div>
+
+    <script src='helperscript.js'>
+        document.addEventListener("DOMContentLoaded", () => { loadTable('data/json-batter-data-09-24-21.json') })
+
+        const docRankingsBody = document.querySelector("#rankingsTable > tbody")
+    </script>
+</body>	
+</html>
