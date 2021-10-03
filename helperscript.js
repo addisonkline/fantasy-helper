@@ -93,25 +93,6 @@ const helperApp = Vue.createApp({
 
             request.send()
         },
-        populateTable(json) {
-            // clears table
-            while (rankingsBody.firstChild) {
-                rankingsBody.removeChild(rankingsBody.firstChild)
-            }
-
-            // populate table
-            json.forEach((row) => {
-                const tr = document.createElement("tr")
-
-                row.forEach((cell) => {
-                    const td = document.createElement("td")
-                    td.textContent = cell
-                    tr.appendChild(td)
-                })
-
-                rankingsBody.appendChild(tr)
-            })  
-        },
         // returns player type displayed in table
         playerTypeSelected(playerType) {
             if(playerType === 'Batters') {
