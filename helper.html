@@ -31,38 +31,10 @@
 
         <p>This is a test to see if "mount" is working</p>
 
-        <!-- displays batter data if batter selected 
-        <div v-if="batterDataShown && countBatterTables < 1">
-            {{ loadTable('data/batter-data-09-24-21.csv') }}
-        </div>
-         displays pitcher data if pitcher selected 
-        <div v-else-if="!batterDataShown && countPitcherTables < 1">
-            {{ loadTable('data/pitcher-data-09-24-21.csv') }}
-        </div>
-        -->
-
+        <!-- the table to be filled -->
         <table id="rankingsTable" class="table">
             <thead>
-                <tr>
-                    <th>Season</th>
-                    <th>Name</th>
-                    <th>Team</th>
-                    <th>PA</th>
-                    <th>BB%</th>
-                    <th>K%</th>
-                    <th>BB/K</th>
-                    <th>AVG</th>
-                    <th>OBP</th>
-                    <th>SLG</th>
-                    <th>OPS</th>
-                    <th>ISO</th>
-                    <th>BABIP</th>
-                    <th>wRC</th>
-                    <th>wRAA</th>
-                    <th>wOBA</th>
-                    <th>wRC+</th>
-                    <th>playerId</th>
-                </tr>
+                <!-- to be filled by JavaScript -->
             </thead>
             <tbody id="rankingsBody">
                 <!-- to be filled by JavaScript -->

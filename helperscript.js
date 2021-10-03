@@ -1,30 +1,30 @@
-//const rankingsBody = document.querySelector("#rankingsTable > tbody");
-//const rankingsBody = document.getElementById('rankingsBody');
+// * * * * * * * * * * * * 
+// Fantasy Helper
+// Created by Addison Kline, circa 2021
+// Data from Fangraphs.com
+// * * * * * * * * * * * * 
+
 const battingTable = "data/json-batter-data-09-24-21.json";
 const pitchingTable = "data/json-pitcher-data-09-24-21.json";
+const battingHeaders = ["Season", "Name", "Team", "PA", "BB%", "K%", "BB/K", "AVG", "OBP", "SLG", "OPS", "ISO", "BABIP", "wRC", "wRAA", "wOBA", "wRC+", "playerId"];
+const pitchingHeaders = ["Season", "Name", "Team", "G", "TBF", "ERA", "H", "2B", "3B", "R", "ER", "HR", "BB", "IBB", "SO", "AVG", "OBP", "SLG", "wOBA", "playerId"];
 
-// function arrayToTable(tableData) {
-//     //var table = $('<table></table>');
-//     console.log('outside arrayToTable function reached')
-//     $(tableData).each(function (i, rowData) {
-//         var row = $('<tr></tr>');
-//         $(rowData).each(function (j, cellData) {
-//             row.append($('<td>'+cellData+'</td>'));
-//         });
-//         rankingsTable.append(row);
-//     });
-//     return rankingsTable;
-// }
-
-function populateTable(json) {
+// this function only works when outside the vue app... oh well
+function populateTable(json, table) {
     const rankingsBody = document.querySelector("#rankingsTable > tbody");
+    const rankingsHeader = document.querySelector("#rankingsTable > thead")
 
-    // clears table
+    // clears table header
+    while (rankingsHeader.firstChild) {
+        rankingsHeader.removeChild(rankingsHeader.firstChild)
+    }
+
+    // clears table body
     while (rankingsBody.firstChild) {
         rankingsBody.removeChild(rankingsBody.firstChild)
     }
 
-    // populate table
+    // populate table body
     json.forEach((row) => {
         const tr = document.createElement("tr")
 
@@ -35,19 +35,33 @@ function populateTable(json) {
         })
 
         rankingsBody.appendChild(tr)
-        //document.getElementById("rankingsTable").appendChild(tr)
     })  
 
-    // console.log('inside arrayToTable function reached')
-    // var table = $('<table></table>');
-    // $(tableData).each(function (i, rowData) {
-    //     var row = $('<tr></tr>');
-    //     $(rowData).each(function (j, cellData) {
-    //         row.append($('<td>'+cellData+'</td>'));
-    //     });
-    //     table.append(row);
-    // });
-    // return table;
+    // populate table header
+    if (table === battingTable) {
+        const tr = document.createElement("tr")
+
+        for (i = 0; i < battingHeaders.length; i++) {
+            const th = document.createElement("th")
+            th.textContent = battingHeaders[i]
+            tr.appendChild(th)
+        }
+        rankingsHeader.appendChild(tr)
+    }
+    else if (table === pitchingTable) {
+        console.log("equality check working")
+        const tr = document.createElement("tr")
+
+        for (i = 0; i < pitchingHeaders.length; i++) {
+            const th = document.createElement("th")
+            th.textContent = pitchingHeaders[i]
+            tr.appendChild(th)
+        }
+        rankingsHeader.appendChild(tr)
+    }
+    else {
+        console.warn("equality check not working, table header can't be loaded")
+    }
 }
 
 const helperApp = Vue.createApp({
@@ -68,51 +82,16 @@ const helperApp = Vue.createApp({
     methods: {
         // loads table using Ajax
         loadTable(table) {
-            console.log('inside loadTable function reached')
-
-            // // clear previous table data
-            // while (rankingsTable.firstChild) {
-            //     rankingsTable.removeChild(rankingsTable.firstChild);
-            // }
-
             // requests table data
             const request = new XMLHttpRequest()
 
             request.open("get", table)
             request.onload = () => {
-                // try {
-                //     const json = JSON.parse(request.responseText)
-                //     populateTable(json)
-                // }
-                // catch (e) {
-                //     console.warn("request.onload error")
-                // }
                 const json = JSON.parse(request.responseText)
-                populateTable(json)
+                populateTable(json, table)
             }
 
             request.send()
-            // $.ajax({
-            //     type: "GET",
-            //     url: table,
-            //     success: function (data) {
-            //         // $(rankingsBody).append(arrayToTable(Papa.parse(data).data)); // here, arrayToTable() is outside the Vue app
-            //         // rankingsBody = arrayToTable(Papa.parse(data).data);
-            //         $(Papa.parse(data).data).each(function (i, rowData) {
-            //             var row = $('<tr></tr>');
-            //             $(rowData).each(function (j, cellData) {
-            //                 row.append($('<td>'+cellData+'</td>'));
-            //             });
-            //             rankingsTable.append(row);
-            //             //console.log(row);
-            //             console.log('row appended')
-            //         });
-            //         console.log(rankingsTable);
-            //     }
-            // }, err => {
-            //     alert(err);
-            //     console.warn('ajax error: creating new table')
-            // });
         },
         populateTable(json) {
             // clears table
@@ -132,17 +111,6 @@ const helperApp = Vue.createApp({
 
                 rankingsBody.appendChild(tr)
             })  
-
-            // console.log('inside arrayToTable function reached')
-            // var table = $('<table></table>');
-            // $(tableData).each(function (i, rowData) {
-            //     var row = $('<tr></tr>');
-            //     $(rowData).each(function (j, cellData) {
-            //         row.append($('<td>'+cellData+'</td>'));
-            //     });
-            //     table.append(row);
-            // });
-            // return table;
         },
         // returns player type displayed in table
         playerTypeSelected(playerType) {
