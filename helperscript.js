@@ -4,14 +4,16 @@
 // Data from Fangraphs.com
 // * * * * * * * * * * * * 
 
-const battingTable = "data/json-batter-data-09-24-21.json";
-const pitchingTable = "data/json-pitcher-data-09-24-21.json";
+const teamsTable = "data/json-team-data-2021-final.json";
+const battingTable = "data/json-batter-data-2021.json";
+const startingPitchingTable = "data/json-starting-pitcher-data-2021-final.json";
+const teamHeaders = ["Team", "Win-Loss", "Offense Rank", "Defense Rank", "Overall Rank"];
 const battingHeaders = ["Season", "Name", "Team", "PA", "BB%", "K%", "BB/K", "AVG", "OBP", "SLG", "OPS", "ISO", "BABIP", "wRC", "wRAA", "wOBA", "wRC+", "playerId"];
-const pitchingHeaders = ["Season", "Name", "Team", "G", "TBF", "ERA", "H", "2B", "3B", "R", "ER", "HR", "BB", "IBB", "SO", "AVG", "OBP", "SLG", "wOBA", "playerId"];
+const startingPitchingHeaders = ["Name", "Team", "IP", "GS", "Ranking"];
 
 // this function only works when outside the vue app... oh well
 function populateTable(json, table) {
-    const rankingsBody = document.querySelector("#rankingsTable > tbody");
+    const rankingsBody = document.querySelector("#rankingsTable > tbody")
     const rankingsHeader = document.querySelector("#rankingsTable > thead")
 
     // clears table header
@@ -26,6 +28,7 @@ function populateTable(json, table) {
 
     // populate table body
     json.forEach((row) => {
+        const thisRow = row
         const tr = document.createElement("tr")
 
         row.forEach((cell) => {
@@ -38,7 +41,17 @@ function populateTable(json, table) {
     })  
 
     // populate table header
-    if (table === battingTable) {
+    if (table === teamsTable) {
+        const tr = document.createElement("tr")
+
+        for (i = 0; i < teamHeaders.length; i++) {
+            const th = document.createElement("th")
+            th.textContent = teamHeaders[i]
+            tr.appendChild(th)
+        }
+        rankingsHeader.appendChild(tr)
+    }
+    else if (table === battingTable) {
         const tr = document.createElement("tr")
 
         for (i = 0; i < battingHeaders.length; i++) {
@@ -48,13 +61,13 @@ function populateTable(json, table) {
         }
         rankingsHeader.appendChild(tr)
     }
-    else if (table === pitchingTable) {
+    else if (table === startingPitchingTable) {
         console.log("equality check working")
         const tr = document.createElement("tr")
 
-        for (i = 0; i < pitchingHeaders.length; i++) {
+        for (i = 0; i < startingPitchingHeaders.length; i++) {
             const th = document.createElement("th")
-            th.textContent = pitchingHeaders[i]
+            th.textContent = startingPitchingHeaders[i]
             tr.appendChild(th)
         }
         rankingsHeader.appendChild(tr)
@@ -73,8 +86,9 @@ const helperApp = Vue.createApp({
             countBatterTables: 0,
             countPitcherTables: 0,
             dataOptions: [
+                { title: 'Teams', url: teamsTable, selected: false},
                 { title: 'Batters', url: battingTable, selected: false },
-                { title: 'Pitchers', url: pitchingTable, selected: false }
+                { title: 'Starting Pitchers', url: startingPitchingTable, selected: false }
             ]
             
         }
@@ -98,7 +112,7 @@ const helperApp = Vue.createApp({
             if(playerType === 'Batters') {
                 return this.batterDataShown
             }
-            else if(playerType === 'Pitchers') {
+            else if(playerType === 'Starting Pitchers' || playerType === 'Teams') {
                 return !this.batterDataShown
             }
         },
@@ -107,7 +121,7 @@ const helperApp = Vue.createApp({
             if(playerType === 'Batters') {
                 this.batterDataShown = true
             }
-            else if(playerType === 'Pitchers') {
+            else if(playerType === 'Starting Pitchers' || playerType === 'Teams') {
                 this.batterDataShown = false
             }
             console.log("player type set to " + playerType)
@@ -119,11 +133,14 @@ const helperApp = Vue.createApp({
         dataSourceForPlayerType() {
             playerType = document.getElementById("playerType").value
 
-            if(playerType === 'Batters') {
+            if (playerType === 'Teams') {
+                return teamsTable
+            }
+            else if(playerType === 'Batters') {
                 return battingTable
             }
-            else if(playerType === 'Pitchers') {
-                return pitchingTable
+            else if(playerType === 'Starting Pitchers') {
+                return startingPitchingTable
             }
         }
     },

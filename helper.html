@@ -19,10 +19,11 @@
 
     <div id="helper">
         <!-- dropdown menu for player type selection -->
-        <label for="playerType">Player Type:</label>
+        <label for="playerType">Ranking Type:</label>
         <select name="playerType" id="playerType">
+            <option value="Teams">Teams</option>
             <option value="Batters">Batters</option>
-            <option value="Pitchers">Pitchers</option>
+            <option value="Starting Pitchers">Starting Pitchers</option>
         </select>
         <button @click="setTablePlayer(selectedPlayerType())">
             <span>Set Player Type</span>
@@ -44,7 +45,7 @@
     </div>
 
     <script src='helperscript.js'>
-        document.addEventListener("DOMContentLoaded", () => { loadTable('data/json-batter-data-09-24-21.json') })
+        document.addEventListener("DOMContentLoaded", () => { loadTable('data/json-batter-data-2021.json') })
 
         const docRankingsBody = document.querySelector("#rankingsTable > tbody")
     </script>
