@@ -144,6 +144,11 @@ const helperApp = Vue.createApp({
             }
         }
     },
+    // generates team rankings when page loads
+    created: function() { 
+        this.setTablePlayer('Teams')
+        this.loadTable(teamsTable)
+    },
     computed: {
 
     }

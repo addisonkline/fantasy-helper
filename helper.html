@@ -17,8 +17,8 @@
 <body>
     <h1>Welcome to Fantasy Helper</h1>
 
-    <div id="helper">
-        <!-- dropdown menu for player type selection -->
+    <div id="helper" @load="setTablePlayer('Teams')" @load="loadTable('data/json-team-data-2021-final.json')">
+        <!-- dropdown menu for data type selection -->
         <label for="playerType">Ranking Type:</label>
         <select name="playerType" id="playerType">
             <option value="Teams">Teams</option>
@@ -45,9 +45,7 @@
     </div>
 
     <script src='helperscript.js'>
-        document.addEventListener("DOMContentLoaded", () => { loadTable('data/json-batter-data-2021.json') })
-
-        const docRankingsBody = document.querySelector("#rankingsTable > tbody")
+        // nothing needs to go here anymore
     </script>
 </body>	
 </html>
