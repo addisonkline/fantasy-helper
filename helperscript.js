@@ -5,11 +5,13 @@
 // * * * * * * * * * * * * 
 
 const teamsTable = "data/json-team-data-2021-final.json";
-const battingTable = "data/json-batter-data-2021.json";
+const battingTable = "data/json-batter-data-2021-final.json";
 const startingPitchingTable = "data/json-starting-pitcher-data-2021-final.json";
+const reliefPitchingTable = "data/json-relief-pitcher-data-2021-final.json";
 const teamHeaders = ["Team", "Win-Loss", "Offense Rank", "Defense Rank", "Overall Rank"];
-const battingHeaders = ["Season", "Name", "Team", "PA", "BB%", "K%", "BB/K", "AVG", "OBP", "SLG", "OPS", "ISO", "BABIP", "wRC", "wRAA", "wOBA", "wRC+", "playerId"];
+const battingHeaders = ["Name", "Team", "G", "PA", "Ranking"];
 const startingPitchingHeaders = ["Name", "Team", "IP", "GS", "Ranking"];
+const reliefPitchingHeaders = ["Name", "Team", "IP", "G", "Ranking"];
 
 // this function only works when outside the vue app... oh well
 function populateTable(json, table) {
@@ -72,6 +74,17 @@ function populateTable(json, table) {
         }
         rankingsHeader.appendChild(tr)
     }
+    else if (table === reliefPitchingTable) {
+        console.log("equality check working")
+        const tr = document.createElement("tr")
+
+        for (i = 0; i < reliefPitchingHeaders.length; i++) {
+            const th = document.createElement("th")
+            th.textContent = reliefPitchingHeaders[i]
+            tr.appendChild(th)
+        }
+        rankingsHeader.appendChild(tr)
+    }
     else {
         console.warn("equality check not working, table header can't be loaded")
     }
@@ -86,9 +99,10 @@ const helperApp = Vue.createApp({
             countBatterTables: 0,
             countPitcherTables: 0,
             dataOptions: [
-                { title: 'Teams', url: teamsTable, selected: false},
+                { title: 'Teams', url: teamsTable, selected: true},
                 { title: 'Batters', url: battingTable, selected: false },
-                { title: 'Starting Pitchers', url: startingPitchingTable, selected: false }
+                { title: 'Starting Pitchers', url: startingPitchingTable, selected: false },
+                { title: 'Relief Pitchers', url: reliefPitchingTable, selected: false}
             ]
             
         }
@@ -112,7 +126,7 @@ const helperApp = Vue.createApp({
             if(playerType === 'Batters') {
                 return this.batterDataShown
             }
-            else if(playerType === 'Starting Pitchers' || playerType === 'Teams') {
+            else if(playerType === 'Starting Pitchers' || playerType === 'Relief Pitchers' || playerType === 'Teams') {
                 return !this.batterDataShown
             }
         },
@@ -121,7 +135,7 @@ const helperApp = Vue.createApp({
             if(playerType === 'Batters') {
                 this.batterDataShown = true
             }
-            else if(playerType === 'Starting Pitchers' || playerType === 'Teams') {
+            else if(playerType === 'Starting Pitchers' || playerType === 'Teams' || playerType === 'Relief Pitchers') {
                 this.batterDataShown = false
             }
             console.log("player type set to " + playerType)
@@ -141,6 +155,9 @@ const helperApp = Vue.createApp({
             }
             else if(playerType === 'Starting Pitchers') {
                 return startingPitchingTable
+            }
+            else if(playerType === 'Relief Pitchers') {
+                return reliefPitchingTable
             }
         }
     },
